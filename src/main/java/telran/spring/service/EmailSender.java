@@ -12,7 +12,7 @@ public class EmailSender implements Sender {
 	@Override
 	public String send(Message message) {
 		log.debug("Email service received message {}", message);
-		String res = "Email sender have not received EmailMessage";
+		String res =  errorMessage;
 		if(message instanceof EmailMessage) {
 			EmailMessage emailMessage = (EmailMessage) message;
 			res = String.format("email sender -  text: %s has been sent to mail %s", emailMessage.text, emailMessage.emailAddress);
