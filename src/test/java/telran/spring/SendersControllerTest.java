@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import telran.spring.controller.SenderController;
 import telran.spring.model.Message;
-import telran.spring.security.JwtSecurityConfiguration;
+import telran.spring.security.RolesConfigurationImpl;
+import telran.spring.security.jwt.*;
 import telran.spring.service.Sender;
 @Service
 class MockSender implements Sender {
@@ -45,7 +48,10 @@ class MockSender implements Sender {
 	
 }
 @WithMockUser(roles = {"USER", "ADMIN"},username = "admin")
-@WebMvcTest({SenderController.class, MockSender.class, JwtSecurityConfiguration.class})
+@WebMvcTest(value = {SenderController.class, MockSender.class, SecurityConfiguration.class}, 
+excludeFilters = {@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtFilter.class)})
+
+
 class SendersControllerTest {
 @Autowired
 	MockMvc mockMvc;
